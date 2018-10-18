@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>遍历复选框</title>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#btn").click(function(){
+                var str = "";
+                $("input[name='ckb']").each(function(){
+                    if($(this).is(":checked"))
+                    {
+                        str += "_" + $(this).val();
+                    }
+                });
+                $("#txt").html(str);
+            });
+        });
+    </script>
+</head>
+<body>
+<div>
+    <input type="checkbox" name="ckb" value="1" />1
+    <input type="checkbox" name="ckb" value="2" />2
+    <input type="checkbox" name="ckb" value="3" />3
+    <input type="checkbox" name="ckb" value="4" />4
+    <input type="checkbox" name="ckb" value="5" />5
+    <input type="checkbox" name="ckb" value="6" />6
+    <input type="checkbox" name="ckb" value="7" />7
+    <input type="checkbox" name="ckb" value="8" />8
+    <input type="checkbox" name="ckb" value="9" />9
+    <input type="checkbox" name="ckb" value="10" />10<br>
+    <input type="button" id="btn" value="遍历"/>
+    <div id="txt"></div>
+</div>
+</body>
+</html>

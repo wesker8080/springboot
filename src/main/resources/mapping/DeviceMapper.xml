@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wtwd.springboot.mapper.DeviceMapper" >
+  <resultMap id="BaseResultMap" type="com.wtwd.springboot.model.Device" >
+    <id column="dev_id" property="devId" jdbcType="INTEGER" />
+    <result column="dev_userid" property="devUserid" jdbcType="INTEGER" />
+    <result column="dev_group" property="devGroup" jdbcType="VARCHAR" />
+    <result column="dev_type" property="devType" jdbcType="VARCHAR" />
+    <result column="dev_activetime" property="devActivetime" jdbcType="TIMESTAMP" />
+    <result column="dev_power" property="devPower" jdbcType="VARCHAR" />
+    <result column="dev_data" property="devData" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="UserResultMap" type="com.wtwd.springboot.model.DeviceUserLocation">
+    <result column="dev_userid" property="devUserid" jdbcType="INTEGER" />
+    <result column="dev_data" property="devData" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    dev_id, dev_userid, dev_group, dev_type, dev_activetime, dev_power,dev_data
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from device
+    where dev_id = #{devId,jdbcType=INTEGER}
+
+  </select>
+    <select id="selectByNoneParam" resultMap="BaseResultMap" >
+      select
+      <include refid="Base_Column_List" />
+      from device
+    </select>
+
+    <select id="selectByOneParam" resultType="com.wtwd.springboot.model.DeviceUserLocation">
+     SELECT
+     dev_userid devUserid ,dev_data devData
+     from device
+     where dev_type = #{devId,jdbcType=INTEGER};
+    </select>
+
+  <select id="selectByTwoParam" parameterType="java.util.Map" resultType="com.wtwd.springboot.model.DeviceUserLocation">
+     SELECT
+     dev_userid devUserid,dev_data devData
+     from device
+     where
+    ${param}
+    in
+    <foreach collection="userlist" open="(" close=")" separator="," item="id">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="selectByTwoParamMob" parameterType="java.util.Map" resultType="com.wtwd.springboot.model.DeviceUserLocation">
+    SELECT
+    dev_userid devUserid,dev_data devData
+    from device
+    where
+    ${param} = ${id}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from device
+    where dev_id = #{devId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wtwd.springboot.model.Device" >
+    insert into device (dev_id, dev_userid, dev_group, 
+      dev_type, dev_activetime, dev_power,dev_data
+      )
+    values (#{devId,jdbcType=INTEGER}, #{devUserid,jdbcType=INTEGER}, #{devGroup,jdbcType=VARCHAR}, 
+      #{devType,jdbcType=VARCHAR}, #{devActivetime,jdbcType=TIMESTAMP}, #{devPower,jdbcType=VARCHAR},
+      #{devData,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wtwd.springboot.model.Device" >
+    insert into device
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="devId != null" >
+        dev_id,
+      </if>
+      <if test="devUserid != null" >
+        dev_userid,
+      </if>
+      <if test="devGroup != null" >
+        dev_group,
+      </if>
+      <if test="devType != null" >
+        dev_type,
+      </if>
+      <if test="devActivetime != null" >
+        dev_activetime,
+      </if>
+      <if test="devPower != null" >
+        dev_power,
+      </if>
+      <if test="devData != null" >
+        dev_data,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="devId != null" >
+        #{devId,jdbcType=INTEGER},
+      </if>
+      <if test="devUserid != null" >
+        #{devUserid,jdbcType=INTEGER},
+      </if>
+      <if test="devGroup != null" >
+        #{devGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="devType != null" >
+        #{devType,jdbcType=VARCHAR},
+      </if>
+      <if test="devActivetime != null" >
+        #{devActivetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="devPower != null" >
+        #{devPower,jdbcType=VARCHAR},
+      </if>
+      <if test="devData != null" >
+        #{devData,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wtwd.springboot.model.Device" >
+    update device
+    <set >
+      <if test="devUserid != null" >
+        dev_userid = #{devUserid,jdbcType=INTEGER},
+      </if>
+      <if test="devGroup != null" >
+        dev_group = #{devGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="devType != null" >
+        dev_type = #{devType,jdbcType=VARCHAR},
+      </if>
+      <if test="devActivetime != null" >
+        dev_activetime = #{devActivetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="devPower != null" >
+        dev_power = #{devPower,jdbcType=VARCHAR},
+      </if>
+      <if test="devData != null" >
+        dev_data = #{devData,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where dev_id = #{devId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wtwd.springboot.model.Device" >
+    update device
+    set dev_userid = #{devUserid,jdbcType=INTEGER},
+      dev_group = #{devGroup,jdbcType=VARCHAR},
+      dev_type = #{devType,jdbcType=VARCHAR},
+      dev_activetime = #{devActivetime,jdbcType=TIMESTAMP},
+      dev_power = #{devPower,jdbcType=VARCHAR}
+      dev_data = #{devData,jdbcType=VARCHAR}
+    where dev_id = #{devId,jdbcType=INTEGER}
+  </update>
+
+
+  <!-- sql片段，对应字段名称,id属性值任意 -->
+  <sql id="key">
+    <trim suffixOverrides=",">
+      <if test="devType != null">
+        dev_type = #{devType,jdbcType=VARCHAR},
+      </if>
+      <if test="devGroup!=null">
+        dev_group = #{devGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="devPower != null" >
+        dev_power = #{devPower,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </sql>
+
+  <!-- sql片段,对用？,id属性值任意 -->
+  <sql id="value">
+    <trim suffixOverrides=",">
+      <if test="devType != null">
+        #{dev_type},
+      </if>
+      <if test="devGroup!=null">
+        #{dev_group},
+      </if>
+      <if test="devPower!=null">
+        #{dev_power},
+      </if>
+    </trim>
+  </sql>
+
+</mapper>
